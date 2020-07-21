@@ -3,11 +3,16 @@ from os import getenv
 import uuid, json, requests
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
 
+SECRET_KEY = client.get_secret(SecretKey)
+TRANSLATOR_TEXT_SUBCRIPTION_KEY = 
+TRANSLATOR_TEXT_ENDPOINT = 
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY']=getenv('SECRET_KEY')
+app.config['SECRET_KEY']= SECRET_KEY.value
 
 langs = requests.get('https://api.cognitive.microsofttranslator.com/languages?api-version=3.0')
 langs = langs.json()
