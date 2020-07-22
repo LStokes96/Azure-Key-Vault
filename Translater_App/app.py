@@ -6,13 +6,12 @@ from wtforms import StringField, SubmitField, SelectField
 from azure.keyvault.secrets import SecretClient
 from azure.identity import DefaultAzureCredential
 
-SECRET_KEY = client.get_secret(SecretKey)
-TRANSLATOR_TEXT_SUBCRIPTION_KEY = 
-TRANSLATOR_TEXT_ENDPOINT = 
-
 app = Flask(__name__)
 
-app.config['SECRET_KEY']= SECRET_KEY.value
+crediential = DefaultAzureCredential
+client = SecretClient(vault_url=getenv('URL'), credential=credential)
+
+app.config['SECRET_KEY']= client.get_secret(secretkey).value
 
 langs = requests.get('https://api.cognitive.microsofttranslator.com/languages?api-version=3.0')
 langs = langs.json()
@@ -32,8 +31,8 @@ def translate():
     form = TranslateForm()
     response = ""
     if form.validate_on_submit():
-        subscription_key = getenv('TRANSLATOR_TEXT_SUBSCRIPTION_KEY')
-        endpoint = getenv('TRANSLATOR_TEXT_ENDPOINT')
+        subscription_key = client.get_secret(translator_key).value
+        endpoint = client.get_secret(translator_endpoint).value
         addition = "translate?api-version=3.0&to="
         headers = {
         'Ocp-Apim-Subscription-Key':subscription_key,
